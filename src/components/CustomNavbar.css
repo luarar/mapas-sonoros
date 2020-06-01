@@ -1,0 +1,9 @@
+.custom-nav{
+  min-height: 4rem;
+  background-color: #20232a;
+  padding: .5rem 1rem;
+}
+
+.nav-link {
+  padding: 1.5rem 1rem;
+}
