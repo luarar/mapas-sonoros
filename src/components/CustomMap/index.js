@@ -1,10 +1,10 @@
-import React from "react";
+
+//import React from "react";
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon } from "leaflet";
-import useSwr from "swr";
 import AudioPlayer from "../AudioPlayer"
+import React, { useState } from 'react';
 
-const fetcher = (...args) => fetch(...args).then(response => response.json());
 
 const icon = new Icon({
   iconUrl: "/volume-down-solid.svg",
@@ -12,64 +12,29 @@ const icon = new Icon({
 });
 
 export default function CustomMap() {
-  const url =
-    "https://data.police.uk/api/crimes-street/all-crime?lat=52.629729&lng=-1.131592&date=2019-10";
-  const { data, error } = useSwr(url, fetcher);
-  //const sounds = data && !error ? data.slice(0, 100) : [];
-  var sounds = [
-    {
-      "id": 2142,
-      "slug": "tanto-amor-cover",
-      "name": "Tanto Amor (Cover)",
-      "audio": "https://redpanal.org/media/uploads/audios/2020_05/tanto_amor_r1_sesion.ogg",
-      "created_at": "2020-05-26T03:39:45.129744Z",
-      "license": "CC-BY-SA-4.0",
-      "description": "El Cuaterno de Lost",
-      "totalframes": 8029632,
-      "samplerate": 48000,
-      "use_type": "song",
-      "genre": "rock",
-      "instrument": "multiple",
-      "tags": [],
-      "position_lat": "-34.5940562",
-      "position_long": "-58.4120968"
-    },
-    {
-      "id": 2141,
-      "slug": "creep-cover",
-      "name": "Creep (Cover)",
-      "audio": "https://redpanal.org/media/uploads/audios/2020_05/creep_r1_sesion.ogg",
-      "created_at": "2020-05-23T22:55:11.473385Z",
-      "license": "CC-BY-SA-4.0",
-      "description": "El Cuaterno de Lost",
-      "totalframes": 11792448,
-      "samplerate": 48000,
-      "use_type": "song",
-      "genre": "rock",
-      "instrument": "multiple",
-      "tags": [],
-      "position_lat": "-34.5898243",
-      "position_long": "-58.4103283"
-    },
-    {
-      "id": 2140,
-      "slug": "fade-into-you-cover",
-      "name": "Fade Into You (Cover)",
-      "audio": "https://redpanal.org/media/uploads/audios/2020_05/fade_into_you_r1_sesion.ogg",
-      "created_at": "2020-05-23T22:50:36.751504Z",
-      "license": "CC-BY-SA-4.0",
-      "description": "El cuaterno de lost",
-      "totalframes": 14664000,
-      "samplerate": 48000,
-      "use_type": "song",
-      "genre": "rock",
-      "instrument": "multiple",
-      "tags": [],
-      "position_lat": "34.5936936",
-      "position_long": "-58.4130111"
-    }
-  ]
-  const [activeSound, setActiveSound] = React.useState(null);
+
+	const [error, setError] = useState(null);
+	const [isLoaded, setIsLoaded] = useState(false);
+	const [items, setItems] = useState([]);
+	const [activeSound, setActiveSound] = React.useState(null);
+	const sounds = items && !error ? items.slice(0, 100) : [];
+
+
+	React.useEffect(() => {
+    fetch("https://redpanal.org/api/audio/list/?user=Luarit")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setItems(result.items);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      )
+	}, [])
+	
 
   return (
     <Map center={[
@@ -88,7 +53,8 @@ export default function CustomMap() {
             setActiveSound(sound);
           }}
         />
-      ))}
+      )
+      )}
 
       {activeSound && (
         <Popup
