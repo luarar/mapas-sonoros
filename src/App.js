@@ -92,19 +92,20 @@ class App extends Component {
       name: "test-for-sound-maps"
     })
 
+
+    let headers = new Headers();
     let username = process.env.username
     let password = process.env.password
     let post_url = process.env.post_url
-    let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Authorization', 'Basic ' + username + ":" + password);
     headers.append('Origin', 'http://localhost:3000');
 
-    //axios.post(post_url,
-    axios.post(`https://redpanal.org/api/audio/`,
+    axios.post(post_url,
       {
         headers: headers,
+
         body: formData
       },
       {
