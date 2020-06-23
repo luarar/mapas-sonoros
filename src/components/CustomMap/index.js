@@ -27,6 +27,7 @@ export default function CustomMap() {
         (result) => {
           setIsLoaded(true);
           setItems(result.items);
+          console.log(result.items)
         },
         (error) => {
           setIsLoaded(true);
