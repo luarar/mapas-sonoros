@@ -9,21 +9,15 @@ import CustomNavbar from './components/CustomNavbar';
 import CustomMap from './components/CustomMap';
 
 
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      loaded: 0,
-      position_long:null,
-      position_lat:null
+      loaded: 0
     }
-  this.getMyLocation = this.getMyLocation.bind(this)
 
-  }
-
-  componentDidMount() {
-    this.getMyLocation()
   }
 
   checkMimeType = (event) => {
@@ -85,22 +79,6 @@ class App extends Component {
     }
   }
 
-
-  getMyLocation() {
-    const location = window.navigator && window.navigator.geolocation
-    if (location) {
-      location.getCurrentPosition((position) => {
-        this.setState({
-          position_long:position.coords.latitude, 
-          position_lat: position.coords.longitude 
-        })
-        console.log(this.position_long, this.position_lat)
-      }, (error) => {
-        this.setState({ position_lat: 'err-latitude', position_long: 'err-longitude' })
-      })
-    }
-  }
-
   onClickHandler = () => {
     const formData = new FormData()
     formData.append('file', {
@@ -114,22 +92,19 @@ class App extends Component {
       name: "test-for-sound-maps"
     })
 
-
+    let username = process.env.username
+    let password = process.env.password
+    let post_url = process.env.post_url
     let headers = new Headers();
-    let username = 'Luarit'
-    let password = 'mL3ufPuWrb94yKb'
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     headers.append('Authorization', 'Basic ' + username + ":" + password);
     headers.append('Origin', 'http://localhost:3000');
 
+    //axios.post(post_url,
     axios.post(`https://redpanal.org/api/audio/`,
       {
         headers: headers,
-        // auth: {
-        //   username: 'Luarit',
-        //   password: 'mL3ufPuWrb94yKb' // Bad password
-        // },
         body: formData
       },
       {
@@ -148,8 +123,11 @@ class App extends Component {
   }
 
 
+
   render() {
-    const { position_lat, position_long } = this.state
+    // var watchID = navigator.geolocation.watchPosition(function (position) {
+    //   console.log(position.coords.latitude, position.coords.longitude);
+    // });
 
     return (
       <>
@@ -160,8 +138,6 @@ class App extends Component {
             <h3>Lorem ipsum sor amet </h3>
           </Jumbotron>
         </Container>
-        <button type="button" className="btn btn-success btn-block" onClick={this.getMyLocation}>get geo</button>
-
         <Container className="mg-btm">
           <div className="offset-md-3 col-md-6">
             <div className="form-group files">
