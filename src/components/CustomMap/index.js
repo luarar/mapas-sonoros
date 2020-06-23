@@ -18,10 +18,10 @@ export default function CustomMap() {
 	const [items, setItems] = useState([]);
 	const [activeSound, setActiveSound] = React.useState(null);
 	const sounds = items && !error ? items.slice(0, 100) : [];
-
+  const get_url = process.env.get_url
 
 	React.useEffect(() => {
-    fetch("https://redpanal.org/api/audio/list/?user=Luarit")
+    fetch(get_url)
       .then(res => res.json())
       .then(
         (result) => {
