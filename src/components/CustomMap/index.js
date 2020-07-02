@@ -21,13 +21,12 @@ export default function CustomMap() {
   const get_url = process.env.get_url
 
 	React.useEffect(() => {
-    fetch(get_url)
+    fetch('/api/audio/list/?user=Luarit')
       .then(res => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
-          setItems(result.items);
-          console.log(result.items)
+          setItems(result.results);
         },
         (error) => {
           setIsLoaded(true);
@@ -45,19 +44,28 @@ export default function CustomMap() {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
 
+
+
       {sounds.map(sound => (
-        <Marker
-          key={sound.id}
-          position={[sound.position_lat, sound.position_long]}
-          icon={icon}
-          onClick={() => {
-            setActiveSound(sound);
-          }}
-        />
+
+        (sound.position_lat !=null ? 
+          (
+            <Marker
+            key={sound.id}
+            position={[sound.position_lat, sound.position_long]}
+            icon={icon}
+            onClick={() => {
+              setActiveSound(sound);
+            }}
+          />
+            ) 
+          : ('') 
+        )
+        
       )
       )}
 
-      {activeSound && (
+      {activeSound && activeSound.position_lat!=null && (
         <Popup
           position={[
             activeSound.position_lat,

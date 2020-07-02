@@ -15,11 +15,15 @@ class App extends Component {
     super(props);
     this.state = {
       selectedFile: null,
-      loaded: 0
+      loaded: 0,
+      position_lat: '',
+      position_long: ''
     }
 
   }
 
+
+  
   checkMimeType = (event) => {
     //getting file object
     let files = event.target.files
@@ -44,8 +48,8 @@ class App extends Component {
   }
   maxSelectFile = (event) => {
     let files = event.target.files
-    if (files.length > 3) {
-      const msg = 'Only 3 images can be uploaded at a time'
+    if (files.length > 1) {
+      const msg = 'Only 1 audio can be uploaded'
       event.target.value = null
       toast.warn(msg)
       return false;
@@ -68,6 +72,7 @@ class App extends Component {
     }
     return true;
   }
+
   onChangeHandler = event => {
     var files = event.target.files
     if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkFileSize(event)) {
@@ -80,45 +85,45 @@ class App extends Component {
   }
 
   onClickHandler = () => {
-    const formData = new FormData()
-    formData.append('file', {
-      audio: './../public/cat.mp3',
-      tags: ["untag", "otrotag"],
-      instrument: "other",
-      genre: "other",
-      use_type: "track",
-      description: "sound-maps",
-      licence: "CC-BY-SA-4.0",
-      name: "test-for-sound-maps"
-    })
+    var formData = new FormData()
+    formData.append('audio', this.state.selectedFile.item(0))
+    formData.append('tags',JSON.stringify(["mapas-sonoros", "sound-maps"]))
+    formData.append('instrument','other')
+    formData.append('position_lat', '-34.59449')
+    formData.append('position_long', '-58.40592')
+    formData.append('genre','other')
+    formData.append('use_type','track')
+    formData.append('description','sound-maps')
+    // formData.append('license','CC-BY-SA-4.0')
+    formData.append('name',this.state.selectedFile.item(0).name)
 
 
-    let headers = new Headers();
-    let username = process.env.username
-    let password = process.env.password
-    let post_url = process.env.post_url
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    headers.append('Authorization', 'Basic ' + username + ":" + password);
-    headers.append('Origin', 'http://localhost:3000');
+    let username = process.env.REACT_APP_USERNAME
+    let password = process.env.REACT_APP_PASSWORD
+    const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
+    // console.log(process.env)
+    // headers.append('Content-Type', 'application/json');
+    // headers.append('Accept', 'application/json');
+    // headers.append('Authorization', 'Basic ' + username + ":" + password);
+    // headers.append('Access-Control-Allow-Origin', '*');
 
-    axios.post(post_url,
+    axios.post('/api/audio/', formData ,
       {
-        headers: headers,
-
-        body: formData
-      },
-      {
+        headers: {
+          'Authorization': `Basic ${token}`
+        },
         onUploadProgress: ProgressEvent => {
           this.setState({
             loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
           })
-        },
+        }
       })
       .then(res => { // then print response status
+        console.log(res)
         toast.success('upload success')
       })
       .catch(err => { // then print response status
+        console.log(err)
         toast.error('upload fail')
       })
   }
@@ -126,13 +131,13 @@ class App extends Component {
 
 
   render() {
-    // var watchID = navigator.geolocation.watchPosition(function (position) {
-    //   console.log(position.coords.latitude, position.coords.longitude);
-    // });
+    var watchID = navigator.geolocation.watchPosition(function (position) {
+      console.log(position.coords.latitude, position.coords.longitude);
+    });
 
     return (
       <>
-        <CustomNavbar />
+         <CustomNavbar />
         <Container fluid className="no-gutter">
           <Jumbotron>
             <h1>Mapas sonoros</h1>
@@ -143,7 +148,26 @@ class App extends Component {
           <div className="offset-md-3 col-md-6">
             <div className="form-group files">
               <label>Subí tu archivo de audio</label>
-              <input type="file" className="form-control" multiple onChange={this.onChangeHandler} />
+              <input type="file" className="form-control" accept="audio/*" onChange={this.onChangeHandler} />
+            </div>
+            <div>
+
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Longitud (hasta 5 decimales)</label>
+    <input type="long" class="form-control" id="long" aria-describedby="longitude" placeholder="Longitud" />
+    <small id="longHelp" class="form-text text-muted">Habilitar la geolocalización del navegador para completar automáticamente</small>
+
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Longitud (hasta 5 decimales)</label>
+    <input type="lat" class="form-control" id="lat" aria-describedby="latitude" placeholder="Latitud" />
+    <small id="longHelp" class="form-text text-muted">Habilitar la geolocalización del navegador para completar automáticamente</small>
+
+  </div>
+
+
             </div>
             <div className="form-group">
               <ToastContainer />
@@ -152,11 +176,9 @@ class App extends Component {
             <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Subir</button>
           </div>
         </Container>
-
         <Container fluid className="no-gutter">
           <CustomMap />
         </Container>
-
       </>
     );
   }
