@@ -23,7 +23,53 @@ class App extends Component {
   }
 
 
-  
+  getPosition(options) {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  }
+
+  handlePosition = () => {
+    this.getPosition()
+    .then((position) => {
+      //console.log(position.coords.latitude);
+      this.setState({ 
+      position_lat: (position.coords.latitude).toFixed(5),
+      position_long: (position.coords.longitude).toFixed(5)
+     })
+    })
+    .catch((err) => {
+      console.error(err.message);
+    });
+  }
+
+  // handlePosition = (options) => {
+  //   var a = this.handleGeoloc();
+  //   // this.setState({ 
+  //   //   position_lat: pos
+  //   //   //position_long: pos.long
+  //   //  })
+  //   console.log(a) 
+  // }
+
+
+  // handleGeoloc(){ 
+  //   var pos = {
+  //     lat: 'lala',
+  //     long: 'lele'
+  //   }
+  //   return pos    
+  // }
+
+  // handlePosition = () => {
+  //   var pos = this.handleGeoloc();
+  //   this.setState({ 
+  //     position_lat: pos.lat,
+  //     position_long: pos.long
+  //    })
+  // }
+
+
   checkMimeType = (event) => {
     //getting file object
     let files = event.target.files
@@ -89,8 +135,8 @@ class App extends Component {
     formData.append('audio', this.state.selectedFile.item(0))
     formData.append('tags',JSON.stringify(["mapas-sonoros", "sound-maps"]))
     formData.append('instrument','other')
-    formData.append('position_lat', '-34.59449')
-    formData.append('position_long', '-58.40592')
+    formData.append('position_lat', this.state.position_lat)
+    formData.append('position_long', this.state.position_long)
     formData.append('genre','other')
     formData.append('use_type','track')
     formData.append('description','sound-maps')
@@ -131,9 +177,6 @@ class App extends Component {
 
 
   render() {
-    var watchID = navigator.geolocation.watchPosition(function (position) {
-      console.log(position.coords.latitude, position.coords.longitude);
-    });
 
     return (
       <>
@@ -141,7 +184,11 @@ class App extends Component {
         <Container fluid className="no-gutter">
           <Jumbotron>
             <h1>Mapas sonoros</h1>
-            <h3>Lorem ipsum sor amet </h3>
+            <h3>{this.state.position_lat}</h3>
+            <h3>{this.state.position_long}</h3>
+
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePosition}>Subir</button>
+
           </Jumbotron>
         </Container>
         <Container className="mg-btm">
@@ -151,22 +198,6 @@ class App extends Component {
               <input type="file" className="form-control" accept="audio/*" onChange={this.onChangeHandler} />
             </div>
             <div>
-
-
-  <div class="form-group">
-    <label for="exampleInputEmail1">Longitud (hasta 5 decimales)</label>
-    <input type="long" class="form-control" id="long" aria-describedby="longitude" placeholder="Longitud" />
-    <small id="longHelp" class="form-text text-muted">Habilitar la geolocalización del navegador para completar automáticamente</small>
-
-  </div>
-
-  <div class="form-group">
-    <label for="exampleInputEmail1">Longitud (hasta 5 decimales)</label>
-    <input type="lat" class="form-control" id="lat" aria-describedby="latitude" placeholder="Latitud" />
-    <small id="longHelp" class="form-text text-muted">Habilitar la geolocalización del navegador para completar automáticamente</small>
-
-  </div>
-
 
             </div>
             <div className="form-group">

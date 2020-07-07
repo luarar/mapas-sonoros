@@ -35,7 +35,9 @@ export default function CustomMap() {
       )
 	}, [])
 	
+ 
 
+  
   return (
     <Map center={[
       -34.5920249, -58.4093395]} zoom={14}>
