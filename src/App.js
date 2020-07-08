@@ -184,11 +184,6 @@ class App extends Component {
         <Container fluid className="no-gutter">
           <Jumbotron>
             <h1>Mapas sonoros</h1>
-            <h3>{this.state.position_lat}</h3>
-            <h3>{this.state.position_long}</h3>
-
-            <button type="button" className="btn btn-success btn-block" onClick={this.handlePosition}>Subir</button>
-
           </Jumbotron>
         </Container>
         <Container className="mg-btm">
