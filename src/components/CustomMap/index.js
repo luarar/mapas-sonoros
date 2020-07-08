@@ -20,7 +20,7 @@ export default function CustomMap() {
 	const sounds = items && !error ? items.slice(0, 100) : [];
 
 	React.useEffect(() => {
-    fetch('https://redpanal.org/api/audio/list/?user=Luarit')
+    fetch(process.env.REACT_APP_GET_URL)
       .then(res => res.json())
       .then(
         (result) => {
