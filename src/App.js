@@ -153,7 +153,7 @@ class App extends Component {
     // headers.append('Authorization', 'Basic ' + username + ":" + password);
     // headers.append('Access-Control-Allow-Origin', '*');
 
-    axios.post(process.env.REACT_APP_POST_URL + '/api/audio/', formData ,
+    axios.post(process.env.REACT_APP_POST_URL, formData ,
       {
         headers: {
           'Authorization': `Basic ${token}`
