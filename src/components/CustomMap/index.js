@@ -21,7 +21,7 @@ export default function CustomMap() {
   const get_url = process.env.get_url
 
 	React.useEffect(() => {
-    fetch('/api/audio/list/?user=Luarit')
+    fetch(process.env.REACT_APP_GET_URL)
       .then(res => res.json())
       .then(
         (result) => {
