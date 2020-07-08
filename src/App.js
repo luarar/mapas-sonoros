@@ -153,7 +153,7 @@ class App extends Component {
     // headers.append('Authorization', 'Basic ' + username + ":" + password);
     // headers.append('Access-Control-Allow-Origin', '*');
 
-    axios.post('https://redpanal.org//api/audio/', formData ,
+    axios.post('https://redpanal.org/api/audio/', formData ,
       {
         headers: {
           'Authorization': `Basic ${token}`
