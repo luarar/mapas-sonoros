@@ -31,7 +31,6 @@ class App extends Component {
   handlePosition = () => {
     this.getPosition()
     .then((position) => {
-      //console.log(position.coords.latitude);
       this.setState({ 
       position_lat: (position.coords.latitude).toFixed(5),
       position_long: (position.coords.longitude).toFixed(5)
@@ -41,32 +40,6 @@ class App extends Component {
       console.error(err.message);
     });
   }
-
-  // handlePosition = (options) => {
-  //   var a = this.handleGeoloc();
-  //   // this.setState({ 
-  //   //   position_lat: pos
-  //   //   //position_long: pos.long
-  //   //  })
-  //   console.log(a) 
-  // }
-
-
-  // handleGeoloc(){ 
-  //   var pos = {
-  //     lat: 'lala',
-  //     long: 'lele'
-  //   }
-  //   return pos    
-  // }
-
-  // handlePosition = () => {
-  //   var pos = this.handleGeoloc();
-  //   this.setState({ 
-  //     position_lat: pos.lat,
-  //     position_long: pos.long
-  //    })
-  // }
 
 
   checkMimeType = (event) => {
@@ -167,6 +140,7 @@ class App extends Component {
       })
       .then(res => { // then print response status
         console.log(res)
+
         toast.success('upload success')
       })
       .catch(err => { // then print response status
@@ -193,14 +167,17 @@ class App extends Component {
               <input type="file" className="form-control" accept="audio/*" onChange={this.onChangeHandler} />
             </div>
             <div>
-
+              <div class="form-check">
+                <input type="checkbox" onClick={this.handlePosition}  class="form-check-input" id="localization" />
+                <label class="form-check-label" for="localization">Otorgar geolocalización</label>
+              </div>
             </div>
             <div className="form-group">
               <ToastContainer />
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
-            <button type="button" className="btn btn-success btn-block" onClick={() => { this.handlePosition(); this.onClickHandler();}}>Subir</button>
-            
+            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Subir</button>
+
           </div>
         </Container>
         <Container fluid className="no-gutter">
