@@ -22,7 +22,6 @@ class App extends Component {
 
   }
 
-
   getPosition(options) {
     return new Promise(function (resolve, reject) {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
@@ -199,7 +198,7 @@ class App extends Component {
               <ToastContainer />
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
-            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Subir</button>
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePosition, this.onClickHandler}>Subir</button>
           </div>
         </Container>
         <Container fluid className="no-gutter">
