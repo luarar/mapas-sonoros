@@ -130,7 +130,6 @@ class App extends Component {
   }
 
   onClickHandler = () => {
-    this.handlePosition()
     var formData = new FormData()
     formData.append('audio', this.state.selectedFile.item(0))
     formData.append('tags',JSON.stringify(["mapas-sonoros", "sound-maps"]))
@@ -154,7 +153,9 @@ class App extends Component {
     // headers.append('Access-Control-Allow-Origin', '*');
 
     axios.post(process.env.REACT_APP_POST_URL, formData ,
-      {
+    //axios.post('/api/audio/', formData ,
+
+    {
         headers: {
           'Authorization': `Basic ${token}`
         },
@@ -173,7 +174,6 @@ class App extends Component {
         toast.error('upload fail')
       })
   }
-
 
 
   render() {
@@ -199,7 +199,8 @@ class App extends Component {
               <ToastContainer />
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
-            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Subir</button>
+            <button type="button" className="btn btn-success btn-block" onClick={() => { this.handlePosition(); this.onClickHandler();}}>Subir</button>
+            
           </div>
         </Container>
         <Container fluid className="no-gutter">
