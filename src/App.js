@@ -158,6 +158,8 @@ class App extends Component {
         <Container fluid className="no-gutter">
           <Jumbotron>
             <h1>Mapas sonoros</h1>
+            <h1>{this.state.position_lat}</h1>
+            <h1>{this.state.position_long}</h1>
           </Jumbotron>
         </Container>
         <Container className="mg-btm">
