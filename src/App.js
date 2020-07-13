@@ -170,10 +170,6 @@ class App extends Component {
               <input type="file" className="form-control" accept="audio/*" onChange={this.onChangeHandler} />
             </div>
             <div>
-              <div class="form-check">
-                <input type="checkbox" onClick={this.handlePosition}  class="form-check-input" id="localization" />
-                <label class="form-check-label" for="localization">Otorgar geolocalización</label>
-              </div>
             </div>
             <div className="form-group">
               <ToastContainer />
