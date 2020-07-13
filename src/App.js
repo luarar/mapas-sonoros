@@ -8,6 +8,8 @@ import { Jumbotron, Container } from 'react-bootstrap';
 import CustomNavbar from './components/CustomNavbar';
 import CustomMap from './components/CustomMap';
 
+let LAT;
+let LONG;
 
 
 class App extends Component {
@@ -35,6 +37,7 @@ class App extends Component {
       position_lat: (position.coords.latitude).toFixed(5),
       position_long: (position.coords.longitude).toFixed(5)
      })
+    this.onClickHandler() 
     })
     .catch((err) => {
       console.error(err.message);
@@ -176,7 +179,7 @@ class App extends Component {
               <ToastContainer />
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded, 2)}%</Progress>
             </div>
-            <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Subir</button>
+            <button type="button" className="btn btn-success btn-block" onClick={this.handlePosition}>Subir</button>
 
           </div>
         </Container>
