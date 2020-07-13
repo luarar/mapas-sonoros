@@ -144,11 +144,11 @@ class App extends Component {
       .then(res => { // then print response status
         console.log(res)
 
-        toast.success('upload success')
+        toast.success('carga exitosa!')
       })
       .catch(err => { // then print response status
         console.log(err)
-        toast.error('upload fail')
+        toast.error('la carga falló')
       })
   }
 
