@@ -8,10 +8,6 @@ import { Jumbotron, Container } from 'react-bootstrap';
 import CustomNavbar from './components/CustomNavbar';
 import CustomMap from './components/CustomMap';
 
-let LAT;
-let LONG;
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +17,6 @@ class App extends Component {
       position_lat: '',
       position_long: ''
     }
-
   }
 
   getPosition(options) {
@@ -67,6 +62,7 @@ class App extends Component {
     }
     return true;
   }
+
   maxSelectFile = (event) => {
     let files = event.target.files
     if (files.length > 1) {
@@ -77,6 +73,7 @@ class App extends Component {
     }
     return true;
   }
+
   checkFileSize = (event) => {
     let files = event.target.files
     let size = 20000000000000000000
@@ -115,35 +112,25 @@ class App extends Component {
     formData.append('genre','other')
     formData.append('use_type','track')
     formData.append('description','sound-maps')
-    // formData.append('license','CC-BY-SA-4.0')
     formData.append('name',this.state.selectedFile.item(0).name)
-
 
     let username = process.env.REACT_APP_USERNAME
     let password = process.env.REACT_APP_PASSWORD
     const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64')
-    // console.log(process.env)
-    // headers.append('Content-Type', 'application/json');
-    // headers.append('Accept', 'application/json');
-    // headers.append('Authorization', 'Basic ' + username + ":" + password);
-    // headers.append('Access-Control-Allow-Origin', '*');
 
     axios.post(process.env.REACT_APP_POST_URL, formData ,
-    //axios.post('/api/audio/', formData ,
-
     {
-        headers: {
-          'Authorization': `Basic ${token}`
-        },
-        onUploadProgress: ProgressEvent => {
-          this.setState({
-            loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
-          })
-        }
+      headers: {
+        'Authorization': `Basic ${token}`
+      },
+      onUploadProgress: ProgressEvent => {
+        this.setState({
+          loaded: (ProgressEvent.loaded / ProgressEvent.total * 100),
+        })
+      }
       })
       .then(res => { // then print response status
         console.log(res)
-
         toast.success('carga exitosa!')
       })
       .catch(err => { // then print response status
